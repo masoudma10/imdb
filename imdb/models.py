@@ -18,6 +18,7 @@ class Movie(models.Model):
     name = models.CharField(max_length=200)
     director = models.CharField(max_length=200)
     description = models.TextField()
+    rate = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

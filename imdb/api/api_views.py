@@ -56,12 +56,21 @@ class MovieRetrieveView(APIView):
         valid_data = serializer.validated_data
         name = valid_data.get('name')
         description = valid_data.get('description')
-        try:
-            movie = Movie.objects.get(name=name)
-        except MovieNotFound as e:
-            raise ValidationError(e)
-        movie_data = MovieSerializer(instance=movie)
-        return Response(movie_data.data, status=status.HTTP_200_OK)
+        if name:
+            try:
+                movie = Movie.objects.get(name=name)
+            except MovieNotFound as e:
+                raise ValidationError(e)
+            movie_data = MovieSerializer(instance=movie)
+            return Response(movie_data.data, status=status.HTTP_200_OK)
+        elif description:
+            try:
+                movie = Movie.objects.get(description=description)
+            except MovieNotFound as e:
+                raise ValidationError(e)
+            movie_data = MovieSerializer(instance=movie)
+            return Response(movie_data.data, status=status.HTTP_200_OK)
+
 
 
 class MovieGetView(APIView):
