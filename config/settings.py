@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # second apps
     'users',
     'imdb',
+
+    # third party apps
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
