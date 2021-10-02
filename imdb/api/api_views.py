@@ -6,6 +6,7 @@ from ..permissions import UserPermissions
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from ..task import send_email_task
 from .serializers import CommentSerializer,\
     GenreSerializer,\
     MovieRetrieveSerializer,\
@@ -28,8 +29,13 @@ class MovieCreateView(APIView):
     permission_classes = [UserPermissions, IsAuthenticated]
     def post(self, request):
         serializer = MovieSerializer(data=request.data)
+        serializer.is_valid()
+        valid_data = serializer.validated_data
+        name = valid_data.get('name')
+        description = valid_data.get('description')
         if serializer.is_valid():
             serializer.save()
+            send_email_task(name, description)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

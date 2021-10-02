@@ -28,6 +28,10 @@ class Movie(models.Model):
         return f'{self.name}------\t{self.director}'
 
 
+    def rating_calculate(self):
+        pass
+
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
