@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # second apps
     'users',
+    'imdb',
 ]
 
 MIDDLEWARE = [
