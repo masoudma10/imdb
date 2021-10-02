@@ -22,8 +22,9 @@ class MyUserManager(BaseUserManager):
             raise ValueError('enter your phone number')
 
         user = self.model(email=self.normalize_email(email),
-                          fname=first_name,
-                          lname=last_name, phone=phone)
+                          first_name=first_name,
+                          last_name=last_name,
+                          phone=phone)
         user.set_password(password)
         user.save(using=self._db)
         return user
