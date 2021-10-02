@@ -8,7 +8,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    phone = models.PositiveBigIntegerField(null=True,blank=True,unique=True)
+    phone = models.PositiveBigIntegerField(null=True, blank=True, unique=True)
 
     created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     # for create superuser
-    REQUIRED_FIELDS = ['fname', 'lname','phone',]
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone',]
 
     def __str__(self):
         return self.email
