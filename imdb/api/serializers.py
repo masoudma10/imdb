@@ -9,6 +9,8 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    genre = serializers.StringRelatedField()
+
     class Meta:
         model = Movie
         fields = '__all__'
@@ -20,6 +22,9 @@ class MovieRetrieveSerializer(serializers.Serializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    movie = serializers.StringRelatedField()
+
     class Meta:
         model = Comment
         fields = '__all__'

@@ -76,6 +76,7 @@ class MovieRetrieveView(APIView):
                 raise ValidationError(e)
             movie_data = MovieSerializer(instance=movie)
             return Response(movie_data.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
 
@@ -109,5 +110,7 @@ class CommentShowView(APIView):
             raise ValidationError(e)
         serializer = CommentSerializer(instance=comment, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
