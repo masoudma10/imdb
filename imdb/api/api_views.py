@@ -15,6 +15,9 @@ from .serializers import CommentSerializer,\
 
 
 class GenreCreateView(APIView):
+    """ create genre only
+     permissions: admin users """
+
     permission_classes = [UserPermissions, IsAuthenticated]
     def post(self, request):
         serializer = GenreSerializer(data=request.data)
@@ -26,6 +29,9 @@ class GenreCreateView(APIView):
 
 
 class MovieCreateView(APIView):
+    """
+    create movie api
+    """
     permission_classes = [UserPermissions, IsAuthenticated]
     def post(self, request):
         serializer = MovieSerializer(data=request.data)
@@ -41,6 +47,9 @@ class MovieCreateView(APIView):
 
 
 class MovieUpdateView(APIView):
+    """
+    update movie
+    """
     permission_classes = [UserPermissions, IsAuthenticated]
     def put(self, request, name):
         try:
@@ -55,6 +64,10 @@ class MovieUpdateView(APIView):
 
 
 class MovieRetrieveView(APIView):
+    """
+    search for movie with name and description
+    """
+
     permission_classes = [IsAuthenticated]
     def post(self, request):
         serializer = MovieRetrieveSerializer(data=request.data)
@@ -71,7 +84,7 @@ class MovieRetrieveView(APIView):
             return Response(movie_data.data, status=status.HTTP_200_OK)
         elif description:
             try:
-                movie = Movie.objects.get(description=description)
+                movie = Movie.objects.get(description__icontains=description)
             except MovieNotFound as e:
                 raise ValidationError(e)
             movie_data = MovieSerializer(instance=movie)
@@ -81,6 +94,10 @@ class MovieRetrieveView(APIView):
 
 
 class MovieGetView(APIView):
+
+    """
+    list movie by genre filter
+    """
     permission_classes = [IsAuthenticated]
     def get(self, request, genre):
         try:
@@ -92,6 +109,8 @@ class MovieGetView(APIView):
 
 
 class CommentCreateView(APIView):
+
+    """add a comment for a movie"""
     permission_classes = [IsAuthenticated]
     def post(self, request):
         serializer = CommentSerializer(data=request.data)
@@ -102,6 +121,10 @@ class CommentCreateView(APIView):
 
 
 class CommentShowView(APIView):
+    """
+    list comments for a movie
+    """
+
     permission_classes = [IsAuthenticated]
     def get(self, request, movie):
         try:
@@ -110,6 +133,10 @@ class CommentShowView(APIView):
             raise ValidationError(e)
         serializer = CommentSerializer(instance=comment, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
 
 
 
