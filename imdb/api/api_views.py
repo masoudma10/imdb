@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from ..models import Movie, Comment
+from ..models import Movie, Comment, UserRatingMovies
 from .Exceptions import MovieNotFound, CommentNotFound
 from ..permissions import UserPermissions
 from rest_framework.exceptions import ValidationError
@@ -133,6 +133,7 @@ class CommentShowView(APIView):
             raise ValidationError(e)
         serializer = CommentSerializer(instance=comment, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 

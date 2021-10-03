@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3$@)3&$m=x%6q-zvetgp02-3i5n&b0$6-#)hz5g0bghlng*90f'
-
+# SECRET_KEY = 'django-insecure-3$@)3&$m=x%6q-zvetgp02-3i5n&b0$6-#)hz5g0bghlng*90f'
+SECRET_KEY = os.environ.get('GENERAL_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -83,14 +83,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'imdb',
-        'USER': 'postgres',
-        'PASSWORD': '3570',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
+
 
 
 # Password validation
@@ -159,8 +160,9 @@ CELERY_TASK_SERIALIZER = 'json'
 # email configure
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'masoud.mohebali10@gmail.com'
-EMAIL_HOST_PASSWORD = 'dzgrlvhhvzbukkrm'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True

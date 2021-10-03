@@ -28,12 +28,6 @@ class Movie(models.Model):
         return f'{self.name}------\t{self.director}'
 
 
-    @property
-    def rating(self):
-        return confidence(self)
-
-
-
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,4 +49,8 @@ class UserRatingMovies(models.Model):
 
     def __str__(self):
         return f'{self.user.email}\t------{self.movie}'
+
+    @property
+    def rating(self):
+        return confidence(self.like, self.dislike)
 
