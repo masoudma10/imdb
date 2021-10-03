@@ -12,4 +12,6 @@ urlpatterns = [
     path('movie_update/<str:name>/', api_views.MovieUpdateView.as_view(), name='movie_update'),
     path('comment_create/', api_views.CommentCreateView.as_view(), name='comment_create'),
     path('comment_show/<str:movie>/', api_views.CommentShowView.as_view(), name='comment_show'),
+    path('like/<int:pk>/', api_views.LikeCreate.as_view(), ),
+    path('dislike/<int:pk>/', api_views.DislikeCreate.as_view(), ),
 ]

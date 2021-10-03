@@ -41,16 +41,20 @@ class Comment(models.Model):
 
 
 
-class UserRatingMovies(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class UserLikeMovies(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    like = models.PositiveIntegerField(null=True, blank=True)
-    dislike = models.PositiveIntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return f'{self.user.email}\t------{self.movie}'
 
-    @property
-    def rating(self):
-        return confidence(self.like, self.dislike)
+
+class UserDislikeMovie(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return f'{self.user.email}\t------{self.movie}'
 

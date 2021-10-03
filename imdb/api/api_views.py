@@ -1,16 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from ..models import Movie, Comment, UserRatingMovies
+from ..models import Movie, Comment, UserLikeMovies, UserDislikeMovie
 from .Exceptions import MovieNotFound, CommentNotFound
 from ..permissions import UserPermissions
 from rest_framework.exceptions import ValidationError
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from ..task import send_email_task
 from .serializers import CommentSerializer,\
     GenreSerializer,\
     MovieRetrieveSerializer,\
-    MovieSerializer
+    MovieSerializer, UserLikeMovies, UserDislikeMovie
 
 
 
@@ -135,10 +135,34 @@ class CommentShowView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class LikeCreate(generics.CreateAPIView):
+    serializer_class = UserLikeMovies
 
 
+    def get_queryset(self):
+        user = self.request.user
+        movie = Movie.objects.get(pk=self.kwargs['pk'])
+        return UserLikeMovies.objects.filter(user=user, movie=movie)
+
+    def perform_create(self, serializer):
+        if self.get_queryset().exists():
+            raise ValidationError('you have already voted for this')
+        serializer.save(user=self.request.user, movie=Movie.objects.get(pk=self.kwargs['pk']))
 
 
+class DislikeCreate(generics.CreateAPIView):
+    serializer_class = UserDislikeMovie
+
+
+    def get_queryset(self):
+        user = self.request.user
+        movie = Movie.objects.get(pk=self.kwargs['pk'])
+        return UserDislikeMovie.objects.filter(user=user, movie=movie)
+
+    def perform_create(self, serializer):
+        if self.get_queryset().exists():
+            raise ValidationError('you have already voted for this')
+        serializer.save(user=self.request.user, movie=Movie.objects.get(pk=self.kwargs['pk']))
 
 
 
